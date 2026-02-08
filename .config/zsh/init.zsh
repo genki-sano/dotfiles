@@ -11,7 +11,7 @@ fi
 # 各種設定を読み込む
 # ohmy.zsh: Oh My Zsh 関連
 # options.zsh: その他のカスタム設定
-SCRIPT_DIR=${0:A:h}
+SCRIPT_DIR=${${(%):-%x}:A:h}
 for f in ohmy options; do
  [[ -r "$SCRIPT_DIR/config/$f.zsh" ]] && source "$SCRIPT_DIR/config/$f.zsh"
 done

@@ -18,13 +18,11 @@ alias la='ls -a'
 alias ll='ls -alF'
 
 ## zsh
-alias vz='vim ~/.zshrc'
-ZSH_DIR=${0:A:h}
-alias vzo="vim $ZSH_DIR/ohmy.zsh"
-alias vzp="vim $ZSH_DIR/p10k.zsh"
-alias vze="vim $ZSH_DIR/options.zsh"
+alias vz='nvim ~/.zshrc'
+alias vzp="nvim $HOME/p10k.zsh"
+ZSH_DIR=${${(%):-%x}:A:h}
+alias vzo="nvim $ZSH_DIR/ohmy.zsh"
+alias vze="nvim $ZSH_DIR/options.zsh"
 
 ## others
-alias dot="git --git-dir=$HOME/.dotfiles --work-tree=$HOME"
 alias re='exec $SHELL -l'
-
