@@ -1,0 +1,30 @@
+# SSH keys
+.ssh/
+**/id_rsa
+**/id_ed25519
+**/*.pem
+
+# env files
+**/.env
+**/.env.*
+
+# API keys
+**/*secret*
+**/*token*
+
+# Cache / temp files
+.cache/
+.tmp/
+.DS_Store
+
+# OS / Editor noise
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# Git local config
+.gitconfig.local
+
+## claude code
+**/.claude/settings.local.json
