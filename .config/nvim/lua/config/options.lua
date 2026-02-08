@@ -27,10 +27,3 @@ opt.errorbells = false
 -- ----------------------------------------
 -- 行末の1文字先までカーソルを移動できるように
 opt.virtualedit = "onemore"
-
--- ウィンドウ幅で行を折り返す
-opt.wrap = true
--- 単語の途中で折り返さない
-opt.linebreak = true
--- 折り返し時にインデントを保持
-opt.breakindent = true
