@@ -1,0 +1,21 @@
+# GitHub CLI auth token
+.config/gh/hosts.yml
+
+# Shell history / local machine state¥
+.zsh_history
+.zsh_sessions/
+.zcompdump*
+.zshrc.zwc
+
+# Neovim local stuff
+
+## Swap/backup/undo
+.config/nvim/**/swap/
+.config/nvim/**/backup/
+.config/nvim/**/undo/
+
+## Mason installs
+.config/nvim/mason/
+
+## Lazy plugin runtime
+.config/nvim/lazy/
