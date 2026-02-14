@@ -42,3 +42,7 @@ mise use --global node@lts
 - neovim
 - wezterm
 - Claude Code
+
+## License
+
+This project is licensed under the MIT License, see [LICENSE](LICENSE).
