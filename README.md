@@ -36,7 +36,7 @@ exec $SHELL -l
 mise use --global node@lts
 ```
 
-### Components
+## Components
 
 - zsh
 - neovim
