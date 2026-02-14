@@ -1,0 +1,6 @@
+[merge]
+	ff = false
+[pull]
+	ff = only
+[init]
+	defaultBranch = main
