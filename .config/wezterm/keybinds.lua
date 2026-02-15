@@ -44,16 +44,18 @@ return {
 		},
 		-- コマンドパレット表示
 		{ key = "p", mods = "SUPER", action = act.ActivateCommandPalette },
+		-- アプリケーションを終了
+		{ key = "q", mods = "SUPER", action = act.QuitApplication },
 		-- Tab移動
 		{ key = "Tab", mods = "CTRL", action = act.ActivateTabRelative(1) },
 		{ key = "Tab", mods = "SHIFT|CTRL", action = act.ActivateTabRelative(-1) },
 		-- Tab入れ替え
 		{ key = "{", mods = "LEADER", action = act({ MoveTabRelative = -1 }) },
+		{ key = "}", mods = "LEADER", action = act({ MoveTabRelative = 1 }) },
 		-- Tab新規作成
 		{ key = "t", mods = "SUPER", action = act({ SpawnTab = "CurrentPaneDomain" }) },
 		-- Tabを閉じる
 		{ key = "w", mods = "SUPER", action = act({ CloseCurrentTab = { confirm = true } }) },
-		{ key = "}", mods = "LEADER", action = act({ MoveTabRelative = 1 }) },
 
 		-- 画面フルスクリーン切り替え
 		{ key = "Enter", mods = "ALT", action = act.ToggleFullScreen },
