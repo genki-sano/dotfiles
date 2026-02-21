@@ -6,14 +6,21 @@ return {
 	leader = { key = ";", mods = "CTRL", timeout_milliseconds = 2000 },
 	-- キーバインド @see: https://wezterm.org/config/keys.html
 	keys = {
+		-- コマンドパレット
+		{ key = "p", mods = "SHIFT|CTRL", action = act.ActivateCommandPalette },
+		-- 設定再読み込み
+		{ key = "r", mods = "SHIFT|CTRL", action = act.ReloadConfiguration },
+		-- アプリケーションを終了
+		{ key = "q", mods = "SUPER", action = act.QuitApplication },
+
+		-- workspaceの切り替え
 		{
-			-- workspaceの切り替え
 			key = "w",
 			mods = "LEADER",
 			action = act.ShowLauncherArgs({ flags = "WORKSPACES", title = "Select workspace" }),
 		},
+		-- workspaceの名前変更
 		{
-			--workspaceの名前変更
 			key = "$",
 			mods = "LEADER",
 			action = act.PromptInputLine({
@@ -25,6 +32,7 @@ return {
 				end),
 			}),
 		},
+		-- workspaceの作成
 		{
 			key = "W",
 			mods = "LEADER|SHIFT",
@@ -42,31 +50,27 @@ return {
 				end),
 			}),
 		},
-		-- コマンドパレット表示
-		{ key = "p", mods = "SUPER", action = act.ActivateCommandPalette },
-		-- アプリケーションを終了
-		{ key = "q", mods = "SUPER", action = act.QuitApplication },
+
 		-- Tab移動
 		{ key = "Tab", mods = "CTRL", action = act.ActivateTabRelative(1) },
 		{ key = "Tab", mods = "SHIFT|CTRL", action = act.ActivateTabRelative(-1) },
 		-- Tab入れ替え
 		{ key = "{", mods = "LEADER", action = act({ MoveTabRelative = -1 }) },
-		{ key = "}", mods = "LEADER", action = act({ MoveTabRelative = 1 }) },
 		-- Tab新規作成
 		{ key = "t", mods = "SUPER", action = act({ SpawnTab = "CurrentPaneDomain" }) },
 		-- Tabを閉じる
 		{ key = "w", mods = "SUPER", action = act({ CloseCurrentTab = { confirm = true } }) },
-
-		-- 画面フルスクリーン切り替え
-		{ key = "Enter", mods = "ALT", action = act.ToggleFullScreen },
-
-		-- コピーモード
-		-- { key = 'X', mods = 'LEADER', action = act.ActivateKeyTable{ name = 'copy_mode', one_shot =false }, },
-		{ key = "[", mods = "LEADER", action = act.ActivateCopyMode },
-		-- コピー
-		{ key = "c", mods = "SUPER", action = act.CopyTo("Clipboard") },
-		-- 貼り付け
-		{ key = "v", mods = "SUPER", action = act.PasteFrom("Clipboard") },
+		{ key = "}", mods = "LEADER", action = act({ MoveTabRelative = 1 }) },
+		-- Tab切替 Cmd + 数字
+		{ key = "1", mods = "SUPER", action = act.ActivateTab(0) },
+		{ key = "2", mods = "SUPER", action = act.ActivateTab(1) },
+		{ key = "3", mods = "SUPER", action = act.ActivateTab(2) },
+		{ key = "4", mods = "SUPER", action = act.ActivateTab(3) },
+		{ key = "5", mods = "SUPER", action = act.ActivateTab(4) },
+		{ key = "6", mods = "SUPER", action = act.ActivateTab(5) },
+		{ key = "7", mods = "SUPER", action = act.ActivateTab(6) },
+		{ key = "8", mods = "SUPER", action = act.ActivateTab(7) },
+		{ key = "9", mods = "SUPER", action = act.ActivateTab(-1) },
 
 		-- Pane作成 leader + r or d
 		{ key = "d", mods = "LEADER", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
@@ -84,53 +88,34 @@ return {
 		{ key = "z", mods = "LEADER", action = act.TogglePaneZoomState },
 
 		-- フォントサイズ切替
-		{ key = "+", mods = "CTRL", action = act.IncreaseFontSize },
+		{ key = "^", mods = "CTRL", action = act.IncreaseFontSize },
 		{ key = "-", mods = "CTRL", action = act.DecreaseFontSize },
 		-- フォントサイズのリセット
 		{ key = "0", mods = "CTRL", action = act.ResetFontSize },
 
-		-- タブ切替 Cmd + 数字
-		{ key = "1", mods = "SUPER", action = act.ActivateTab(0) },
-		{ key = "2", mods = "SUPER", action = act.ActivateTab(1) },
-		{ key = "3", mods = "SUPER", action = act.ActivateTab(2) },
-		{ key = "4", mods = "SUPER", action = act.ActivateTab(3) },
-		{ key = "5", mods = "SUPER", action = act.ActivateTab(4) },
-		{ key = "6", mods = "SUPER", action = act.ActivateTab(5) },
-		{ key = "7", mods = "SUPER", action = act.ActivateTab(6) },
-		{ key = "8", mods = "SUPER", action = act.ActivateTab(7) },
-		{ key = "9", mods = "SUPER", action = act.ActivateTab(-1) },
+		-- コピー
+		{ key = "c", mods = "SUPER", action = act.CopyTo("Clipboard") },
+		-- 貼り付け
+		{ key = "v", mods = "SUPER", action = act.PasteFrom("Clipboard") },
 
-		-- コマンドパレット
-		{ key = "p", mods = "SHIFT|CTRL", action = act.ActivateCommandPalette },
-		-- 設定再読み込み
-		{ key = "r", mods = "SHIFT|CTRL", action = act.ReloadConfiguration },
-		-- キーテーブル用
+		-- Panelサイズ調整
 		{ key = "s", mods = "LEADER", action = act.ActivateKeyTable({ name = "resize_pane", one_shot = false }) },
-		{
-			key = "a",
-			mods = "LEADER",
-			action = act.ActivateKeyTable({ name = "activate_pane", timeout_milliseconds = 1000 }),
-		},
+		-- コピーモード
+		{ key = "c", mods = "LEADER", action = act.ActivateCopyMode },
 	},
 	-- キーテーブル @see: https://wezfurlong.org/wezterm/config/key-tables.html
 	key_tables = {
-		-- Paneサイズ調整 leader + s
+		-- Panelサイズ調整 leader + s
 		resize_pane = {
 			{ key = "h", action = act.AdjustPaneSize({ "Left", 1 }) },
 			{ key = "l", action = act.AdjustPaneSize({ "Right", 1 }) },
 			{ key = "k", action = act.AdjustPaneSize({ "Up", 1 }) },
 			{ key = "j", action = act.AdjustPaneSize({ "Down", 1 }) },
 
-			-- Cancel the mode by pressing escape
+			-- Panelサイズ調整を終了
 			{ key = "Enter", action = "PopKeyTable" },
 		},
-		activate_pane = {
-			{ key = "h", action = act.ActivatePaneDirection("Left") },
-			{ key = "l", action = act.ActivatePaneDirection("Right") },
-			{ key = "k", action = act.ActivatePaneDirection("Up") },
-			{ key = "j", action = act.ActivatePaneDirection("Down") },
-		},
-		-- copyモード leader + [
+		-- コピーモード leader + c
 		copy_mode = {
 			-- 移動
 			{ key = "h", mods = "NONE", action = act.CopyMode("MoveLeft") },
