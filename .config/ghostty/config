@@ -1,0 +1,25 @@
+font-family = "MesloLGL Nerd Font"
+font-size = 13
+background-opacity = 0.8
+theme = dark:tokyonight night,light:tokyonight day
+
+maximize = true
+
+macos-window-buttons = hidden
+macos-titlebar-style = native
+
+copy-on-select = clipboard
+
+keybind = ctrl+shift+o=open_config
+keybind = ctrl+shift+r=reload_config
+
+keybind = ctrl+shift+p=toggle_command_palette
+
+keybind = ctrl+semicolon>d=new_split:down
+keybind = ctrl+semicolon>r=new_split:right
+keybind = ctrl+semicolon>x=close_surface
+keybind = ctrl+semicolon>h=goto_split:left
+keybind = ctrl+semicolon>j=goto_split:down
+keybind = ctrl+semicolon>k=goto_split:up
+keybind = ctrl+semicolon>l=goto_split:right
+keybind = ctrl+semicolon>z=toggle_split_zoom
