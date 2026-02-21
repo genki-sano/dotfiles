@@ -61,6 +61,19 @@ return {
 		-- Tabを閉じる
 		{ key = "w", mods = "SUPER", action = act({ CloseCurrentTab = { confirm = true } }) },
 		{ key = "}", mods = "LEADER", action = act({ MoveTabRelative = 1 }) },
+		-- Tabの名前変更
+		{
+			key = "e",
+			mods = "LEADER",
+			action = act.PromptInputLine({
+				description = "Rename tab",
+				action = wezterm.action_callback(function(window, pane, line)
+					if line then
+						window:active_tab():set_title(line)
+					end
+				end),
+			}),
+		},
 		-- Tab切替 Cmd + 数字
 		{ key = "1", mods = "SUPER", action = act.ActivateTab(0) },
 		{ key = "2", mods = "SUPER", action = act.ActivateTab(1) },

@@ -60,11 +60,12 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
 		left_arrow = ACTIVE_TAB_ICON .. "  " .. SOLID_LEFT_ARROW
 	end
 	local edge_foreground = background
-	local title = "   "
-		.. (tab.tab_index + 1)
-		.. ": "
-		.. wezterm.truncate_right(tab.active_pane.title, max_width - 1)
-		.. "   "
+	-- 設定したタブ名を優先する
+	local tab_label = tab.tab_title
+	if tab_label == nil or tab_label == "" then
+		tab_label = tab.active_pane.title
+	end
+	local title = "   " .. (tab.tab_index + 1) .. ": " .. wezterm.truncate_right(tab_label, max_width - 1) .. "   "
 	return {
 		{ Background = { Color = edge_background } },
 		{ Foreground = { Color = edge_foreground } },
