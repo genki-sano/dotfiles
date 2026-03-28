@@ -1,6 +1,40 @@
 local wezterm = require("wezterm")
 local act = wezterm.action
 
+local DEFAULT_OPACITY = 0.75
+local OPACITY_STEP = 0.05
+local MIN_OPACITY = 0.20
+local MAX_OPACITY = 1.00
+
+local function clamp(v, min, max)
+	return math.max(min, math.min(max, v))
+end
+
+local function current_opacity(window)
+	local overrides = window:get_config_overrides() or {}
+	return overrides.window_background_opacity or DEFAULT_OPACITY
+end
+
+wezterm.on("opacity-decrease", function(window, pane)
+	local opacity = clamp(current_opacity(window) - OPACITY_STEP, MIN_OPACITY, MAX_OPACITY)
+	local overrides = window:get_config_overrides() or {}
+	overrides.window_background_opacity = opacity
+	window:set_config_overrides(overrides)
+end)
+
+wezterm.on("opacity-increase", function(window, pane)
+	local opacity = clamp(current_opacity(window) + OPACITY_STEP, MIN_OPACITY, MAX_OPACITY)
+	local overrides = window:get_config_overrides() or {}
+	overrides.window_background_opacity = opacity
+	window:set_config_overrides(overrides)
+end)
+
+wezterm.on("opacity-reset", function(window, pane)
+	local overrides = window:get_config_overrides() or {}
+	overrides.window_background_opacity = DEFAULT_OPACITY
+	window:set_config_overrides(overrides)
+end)
+
 return {
 	-- leaderキー
 	leader = { key = ";", mods = "CTRL", timeout_milliseconds = 2000 },
@@ -111,22 +145,30 @@ return {
 		-- 貼り付け
 		{ key = "v", mods = "SUPER", action = act.PasteFrom("Clipboard") },
 
-		-- Panelサイズ調整
-		{ key = "s", mods = "LEADER", action = act.ActivateKeyTable({ name = "resize_pane", one_shot = false }) },
+		-- 設定モード
+		{ key = "s", mods = "LEADER", action = act.ActivateKeyTable({ name = "setting_mode", one_shot = false }) },
 		-- コピーモード
 		{ key = "c", mods = "LEADER", action = act.ActivateCopyMode },
 	},
 	-- キーテーブル @see: https://wezfurlong.org/wezterm/config/key-tables.html
 	key_tables = {
-		-- Panelサイズ調整 leader + s
-		resize_pane = {
+		-- 設定モード leader + s
+		setting_mode = {
+			-- Paneサイズの調整
 			{ key = "h", action = act.AdjustPaneSize({ "Left", 1 }) },
 			{ key = "l", action = act.AdjustPaneSize({ "Right", 1 }) },
 			{ key = "k", action = act.AdjustPaneSize({ "Up", 1 }) },
 			{ key = "j", action = act.AdjustPaneSize({ "Down", 1 }) },
 
-			-- Panelサイズ調整を終了
-			{ key = "Enter", action = "PopKeyTable" },
+			-- 透明度の調整
+			{ key = "-", action = act.EmitEvent("opacity-decrease") },
+			{ key = ";", action = act.EmitEvent("opacity-increase") },
+			{ key = "0", action = act.EmitEvent("opacity-reset") },
+
+			-- 設定モードの終了
+			{ key = "Escape", action = "PopKeyTable" },
+			{ key = "q", action = "PopKeyTable" },
+			{ key = "c", mods = "CTRL", action = "PopKeyTable" },
 		},
 		-- コピーモード leader + c
 		copy_mode = {
