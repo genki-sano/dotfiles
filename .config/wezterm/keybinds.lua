@@ -137,13 +137,12 @@ local keys = {
 	-- 選択中のPaneのみ表示
 	{ key = "z", mods = "LEADER", action = act.TogglePaneZoomState },
 
-	-- フォントサイズ切替
+	-- フォントサイズの変更
 	{ key = "^", mods = "CTRL", action = act.IncreaseFontSize },
 	{ key = "-", mods = "CTRL", action = act.DecreaseFontSize },
-	-- フォントサイズのリセット
 	{ key = "0", mods = "CTRL", action = act.ResetFontSize },
 
-	-- 背景透過度の調整
+	-- 背景透過度の変更
 	{ key = "-", mods = "SUPER", action = act.EmitEvent("opacity-decrease") },
 	{ key = ";", mods = "SUPER", action = act.EmitEvent("opacity-increase") },
 	{ key = "0", mods = "SUPER", action = act.EmitEvent("opacity-reset") },
@@ -152,6 +151,9 @@ local keys = {
 	{ key = "c", mods = "SUPER", action = act.CopyTo("Clipboard") },
 	-- 貼り付け
 	{ key = "v", mods = "SUPER", action = act.PasteFrom("Clipboard") },
+
+	-- Claude Codeで改行できるように
+	{ key = "Enter", mods = "SHIFT", action = wezterm.action.SendString("\n") },
 
 	-- 設定モード
 	{ key = "s", mods = "LEADER", action = act.ActivateKeyTable({ name = "setting_mode", one_shot = false }) },
