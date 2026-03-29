@@ -75,7 +75,7 @@ local keys = {
 		mods = "LEADER",
 		action = act.PromptInputLine({
 			description = "(wezterm) Set workspace title:",
-			action = wezterm.action_callback(function(win, pane, line)
+			action = wezterm.action_callback(function(_, _, line)
 				if line then
 					wezterm.mux.rename_workspace(wezterm.mux.get_active_workspace(), line)
 				end
@@ -101,6 +101,21 @@ local keys = {
 		}),
 	},
 
+	-- Tab名変更 lerader + ,
+	{
+		key = ",",
+		mods = "LEADER",
+		action = act.PromptInputLine({
+			description = "(wezterm) Rename tab (empty to reset):",
+			action = wezterm.action_callback(function(_, pane, line)
+				if line == nil then
+					return
+				end
+
+				pane:tab():set_title(line)
+			end),
+		}),
+	},
 	-- Tab移動
 	{ key = "Tab", mods = "CTRL", action = act.ActivateTabRelative(1) },
 	{ key = "Tab", mods = "SHIFT|CTRL", action = act.ActivateTabRelative(-1) },

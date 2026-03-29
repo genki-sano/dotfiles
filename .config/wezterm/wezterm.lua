@@ -52,6 +52,6 @@ config.colors = {
 ----------------------------------------------------
 
 require("tab").apply_to_config(config)
-require("keybinds").apply_to_config(config)
+require("keymaps").apply_to_config(config)
 
 return config

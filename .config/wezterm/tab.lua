@@ -1,6 +1,9 @@
 local wezterm = require("wezterm")
 local module = {}
 
+-- Custom tab titles (tab_id -> string or nil)
+module.custom_title = {}
+
 ----------------------------------------------------
 -- 定数
 ----------------------------------------------------
@@ -43,6 +46,7 @@ local function get_tab_colors(is_active)
 	if is_active then
 		return TAB_COLORS.background_active, TAB_COLORS.foreground_active
 	end
+
 	return TAB_COLORS.background_inactive, TAB_COLORS.foreground_inactive
 end
 
@@ -50,6 +54,7 @@ local function get_arrows(is_active)
 	if is_active then
 		return DECORATIONS.left_circle, DECORATIONS.right_circle
 	end
+
 	return "", ""
 end
 
@@ -65,6 +70,15 @@ local function get_icon_and_color(process_name, pane_title, is_claude)
 	return ICONS.fallback, TAB_COLORS.foreground_inactive
 end
 
+local function get_pane_title_text(tab)
+	local tab_title = tab.tab_title
+	if tab_title == "" then
+		return tab.active_pane.title or ""
+	end
+
+	return tab_title
+end
+
 ----------------------------------------------------
 -- メイン処理
 ----------------------------------------------------
@@ -74,8 +88,7 @@ function module.apply_to_config(_)
 	-- @see: https://wezterm.org/config/lua/window-events/format-tab-title.html
 	wezterm.on("format-tab-title", function(tab, _, _, _, _, max_width)
 		local pane = tab.active_pane
-		local process_name = basename(pane.foreground_process_name)
-		local pane_title = pane.title or ""
+		local pane_title = get_pane_title_text(tab)
 
 		-- タブの色
 		local background, foreground = get_tab_colors(tab.is_active)
@@ -89,7 +102,7 @@ function module.apply_to_config(_)
 		local zoom_indicator = pane.is_zoomed and (ICONS.zoom .. "   ") or ""
 
 		-- アイコン
-		local icon, icon_color = get_icon_and_color(process_name, pane_title, false)
+		local icon, icon_color = get_icon_and_color(basename(pane.foreground_process_name), pane.title or "", false)
 
 		-- タブのタイトル
 		local title = "   "
