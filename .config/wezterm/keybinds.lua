@@ -111,19 +111,6 @@ local keys = {
 	-- Tabを閉じる
 	{ key = "w", mods = "SUPER", action = act({ CloseCurrentTab = { confirm = true } }) },
 	{ key = "}", mods = "LEADER", action = act({ MoveTabRelative = 1 }) },
-	-- Tabの名前変更
-	{
-		key = "e",
-		mods = "LEADER",
-		action = act.PromptInputLine({
-			description = "Rename tab",
-			action = wezterm.action_callback(function(window, pane, line)
-				if line then
-					window:active_tab():set_title(line)
-				end
-			end),
-		}),
-	},
 	-- Tab切替 Cmd + 数字
 	{ key = "1", mods = "SUPER", action = act.ActivateTab(0) },
 	{ key = "2", mods = "SUPER", action = act.ActivateTab(1) },
@@ -156,6 +143,11 @@ local keys = {
 	-- フォントサイズのリセット
 	{ key = "0", mods = "CTRL", action = act.ResetFontSize },
 
+	-- 背景透過度の調整
+	{ key = "-", mods = "SUPER", action = act.EmitEvent("opacity-decrease") },
+	{ key = ";", mods = "SUPER", action = act.EmitEvent("opacity-increase") },
+	{ key = "0", mods = "SUPER", action = act.EmitEvent("opacity-reset") },
+
 	-- コピー
 	{ key = "c", mods = "SUPER", action = act.CopyTo("Clipboard") },
 	-- 貼り付け
@@ -176,11 +168,6 @@ local key_tables = {
 		{ key = "l", action = act.AdjustPaneSize({ "Right", 1 }) },
 		{ key = "k", action = act.AdjustPaneSize({ "Up", 1 }) },
 		{ key = "j", action = act.AdjustPaneSize({ "Down", 1 }) },
-
-		-- 透明度の調整
-		{ key = "-", action = act.EmitEvent("opacity-decrease") },
-		{ key = ";", action = act.EmitEvent("opacity-increase") },
-		{ key = "0", action = act.EmitEvent("opacity-reset") },
 
 		-- 設定モードの終了
 		{ key = "Escape", action = "PopKeyTable" },

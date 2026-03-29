@@ -10,7 +10,7 @@ config.font_size = 13.0
 config.use_ime = true
 
 -- 背景の透過度とぼかし
-config.window_background_opacity = 0.75
+config.window_background_opacity = 0.9
 config.macos_window_background_blur = 20
 
 -- 非アクティブPaneを暗くして視認性を向上
