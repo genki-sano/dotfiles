@@ -1,16 +1,24 @@
 local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
+-- 設定ファイルの変更を自動で読み込む
 config.automatically_reload_config = true
+
+-- フォント
 config.font = wezterm.font("MesloLGL Nerd Font")
 config.font_size = 13.0
 config.use_ime = true
+
+-- 背景の透過度とぼかし
 config.window_background_opacity = 0.75
 config.macos_window_background_blur = 20
 
-----------------------------------------------------
--- Tab
-----------------------------------------------------
+-- 非アクティブPaneを暗くして視認性を向上
+config.inactive_pane_hsb = {
+	saturation = 0.9,
+	brightness = 0.1,
+}
+
 -- タイトルバーを非表示
 config.window_decorations = "RESIZE"
 -- タブバーの表示
@@ -39,74 +47,11 @@ config.colors = {
 	},
 }
 
--- @see: https://wezterm.org/config/lua/wezterm/nerdfonts.html
--- アクティブタブにつけるアイコン
-local ACTIVE_TAB_ICON = wezterm.nerdfonts.md_checkbox_marked_circle
--- タブの左側の装飾
-local SOLID_LEFT_ARROW = wezterm.nerdfonts.ple_left_half_circle_thick
--- タブの右側の装飾
-local SOLID_RIGHT_ARROW = wezterm.nerdfonts.ple_right_half_circle_thick
-
--- タブの形をカスタマイズ
--- @see: https://wezterm.org/config/lua/window-events/format-tab-title.html
-wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
-	local background = "#727169"
-	local foreground = "#DCD7BA"
-	local edge_background = "none"
-	local left_arrow = SOLID_LEFT_ARROW
-	if tab.is_active then
-		background = "#FF9E3B"
-		foreground = "#FFFFFF"
-		left_arrow = ACTIVE_TAB_ICON .. "  " .. SOLID_LEFT_ARROW
-	end
-	local edge_foreground = background
-	-- 設定したタブ名を優先する
-	local tab_label = tab.tab_title
-	if tab_label == nil or tab_label == "" then
-		tab_label = tab.active_pane.title
-	end
-	local title = "   " .. (tab.tab_index + 1) .. ": " .. wezterm.truncate_right(tab_label, max_width - 1) .. "   "
-	return {
-		{ Background = { Color = edge_background } },
-		{ Foreground = { Color = edge_foreground } },
-		{ Text = left_arrow },
-		{ Background = { Color = background } },
-		{ Foreground = { Color = foreground } },
-		{ Text = title },
-		{ Background = { Color = edge_background } },
-		{ Foreground = { Color = edge_foreground } },
-		{ Text = SOLID_RIGHT_ARROW },
-	}
-end)
-
 ----------------------------------------------------
--- keybinds
+-- 別ファイルからの読み込み
 ----------------------------------------------------
--- デフォルトのキーバインドを無効にする
-config.disable_default_key_bindings = true
--- カスタムキーバインド設定を読み込んで反映する
-local keybinds = require("keybinds")
-config.leader = keybinds.leader
-config.keys = keybinds.keys
-config.key_tables = keybinds.key_tables
 
--- どのキーモード中かを表示する
--- @see: https://wezterm.org/config/lua/window/set_right_status.html
-wezterm.on("update-right-status", function(window, pane)
-	local name = window:active_key_table()
-
-	if not name then
-		window:set_right_status("")
-		return
-	end
-
-	window:set_right_status(wezterm.format({
-		{ Background = { Color = "#FF9E3B" } },
-		{ Foreground = { Color = "#FFFFFF" } },
-		{ Attribute = { Intensity = "Bold" } },
-		{ Text = "  MODE: " .. name .. "  " },
-		{ Background = { Color = "none" } },
-	}))
-end)
+require("tab").apply_to_config(config)
+require("keybinds").apply_to_config(config)
 
 return config
