@@ -21,31 +21,6 @@ config.inactive_pane_hsb = {
 
 -- タイトルバーを非表示
 config.window_decorations = "RESIZE"
--- タブバーの表示
-config.show_tabs_in_tab_bar = true
--- タブが一つの時は非表示
-config.hide_tab_bar_if_only_one_tab = true
-
--- タブバーの透過
-config.window_frame = {
-	inactive_titlebar_bg = "none",
-	active_titlebar_bg = "none",
-}
-
--- タブバーを背景色に合わせる
-config.window_background_gradient = {
-	colors = { "#000000" },
-}
-
--- タブの追加ボタンを非表示
-config.show_new_tab_button_in_tab_bar = false
-
--- タブ同士の境界線を非表示
-config.colors = {
-	tab_bar = {
-		inactive_tab_edge = "none",
-	},
-}
 
 ----------------------------------------------------
 -- 別ファイルからの読み込み
