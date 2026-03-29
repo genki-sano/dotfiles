@@ -2,6 +2,8 @@
 
 個人開発環境を **コードで再現** するための設定ファイル集です。
 
+![Alt](https://repobeats.axiom.co/api/embed/493ae1a741d3a82e213e20b39b69800aefaab3f5.svg "Repobeats analytics image")
+
 ## Supported OS
 
 - macOS (recommend)
@@ -41,7 +43,6 @@ mise use --global node@lts
 - zsh
 - neovim
 - wezterm
-- Claude Code
 
 ## License
 
