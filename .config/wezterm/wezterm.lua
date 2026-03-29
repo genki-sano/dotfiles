@@ -5,8 +5,8 @@ local config = wezterm.config_builder()
 config.automatically_reload_config = true
 
 -- フォント
-config.font = wezterm.font("MesloLGL Nerd Font")
-config.font_size = 13.0
+config.font = wezterm.font("HackGen Console NF")
+config.font_size = 15.0
 config.use_ime = true
 
 -- 背景の透過度とぼかし
