@@ -10,7 +10,7 @@ module.custom_title = {}
 
 -- @see https://wezterm.org/config/lua/wezterm/nerdfonts.html
 local ICONS = {
-	claude = "✳",
+	claude = wezterm.nerdfonts.md_asterisk,
 	neovim = wezterm.nerdfonts.linux_neovim,
 	fallback = wezterm.nerdfonts.cod_terminal,
 	zoom = wezterm.nerdfonts.md_arrow_expand,
@@ -75,12 +75,12 @@ local function get_icon_and_color(process_name, pane_title)
 end
 
 local function get_pane_title_text(tab)
-	local tab_title = tab.tab_title
-	if tab_title == "" then
-		return tab.active_pane.title or ""
+	local custom_title = tab.tab_title or ""
+	if custom_title ~= "" then
+		return custom_title
 	end
 
-	return tab_title
+	return tab.active_pane.title or ""
 end
 
 ----------------------------------------------------
@@ -136,8 +136,8 @@ function module.apply_to_config(config)
 		local icon, icon_color = get_icon_and_color(process_name, pane_title)
 
 		-- タブのタイトル
-		local title = "   " .. wezterm.truncate_right(get_pane_title_text(tab), max_width)
-		local title_suffix = "     " .. ICONS.command .. "  " .. (tab.tab_index + 1)
+		local title = wezterm.truncate_right(get_pane_title_text(tab), max_width)
+		local title_suffix = ICONS.command .. "  " .. (tab.tab_index + 1)
 
 		return {
 			{ Background = { Color = edge_background } },
@@ -151,8 +151,10 @@ function module.apply_to_config(config)
 			{ Text = icon },
 			{ Foreground = { Color = foreground } },
 			{ Attribute = { Intensity = "Bold" } },
+			{ Text = "   " },
 			{ Text = title },
 			{ Attribute = { Intensity = "Normal" } },
+			{ Text = "     " },
 			{ Text = title_suffix },
 			{ Background = { Color = edge_background } },
 			{ Foreground = { Color = edge_foreground } },
