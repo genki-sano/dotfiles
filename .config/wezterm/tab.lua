@@ -42,6 +42,10 @@ local function basename(path)
 	return string.gsub(path or "", "(.*[/\\])(.*)", "%2")
 end
 
+local function is_claude_process(process_name, pane_title)
+	return process_name == "claude" or (pane_title and (pane_title:find("^✳") or pane_title:lower():find("claude")))
+end
+
 local function get_tab_colors(is_active)
 	if is_active then
 		return TAB_COLORS.background_active, TAB_COLORS.foreground_active
@@ -58,12 +62,12 @@ local function get_arrows(is_active)
 	return "", ""
 end
 
-local function get_icon_and_color(process_name, pane_title, is_claude)
+local function get_icon_and_color(process_name, pane_title)
 	if pane_title == "nvim" or process_name == "nvim" then
 		return ICONS.neovim, ICON_COLORS.neovim
 	end
 
-	if is_claude then
+	if is_claude_process(process_name, pane_title) then
 		return ICONS.claude, ICON_COLORS.claude
 	end
 
@@ -114,7 +118,8 @@ function module.apply_to_config(config)
 	-- @see: https://wezterm.org/config/lua/window-events/format-tab-title.html
 	wezterm.on("format-tab-title", function(tab, _, _, _, _, max_width)
 		local pane = tab.active_pane
-		local pane_title = get_pane_title_text(tab)
+		local pane_title = pane.title or ""
+		local process_name = basename(pane.foreground_process_name or "")
 
 		-- タブの色
 		local background, foreground = get_tab_colors(tab.is_active)
@@ -128,15 +133,11 @@ function module.apply_to_config(config)
 		local zoom_indicator = pane.is_zoomed and (ICONS.zoom .. "   ") or ""
 
 		-- アイコン
-		local icon, icon_color = get_icon_and_color(basename(pane.foreground_process_name), pane.title or "", false)
+		local icon, icon_color = get_icon_and_color(process_name, pane_title)
 
 		-- タブのタイトル
-		local title = "   "
-			.. wezterm.truncate_right(pane_title, max_width)
-			.. "     "
-			.. ICONS.command
-			.. "  "
-			.. (tab.tab_index + 1)
+		local title = "   " .. wezterm.truncate_right(get_pane_title_text(tab), max_width)
+		local title_suffix = "     " .. ICONS.command .. "  " .. (tab.tab_index + 1)
 
 		return {
 			{ Background = { Color = edge_background } },
@@ -151,6 +152,8 @@ function module.apply_to_config(config)
 			{ Foreground = { Color = foreground } },
 			{ Attribute = { Intensity = "Bold" } },
 			{ Text = title },
+			{ Attribute = { Intensity = "Normal" } },
+			{ Text = title_suffix },
 			{ Background = { Color = edge_background } },
 			{ Foreground = { Color = edge_foreground } },
 			{ Text = right_arrow },
