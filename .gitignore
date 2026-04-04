@@ -19,3 +19,6 @@
 
 ## Lazy plugin runtime
 .config/nvim/lazy/
+
+# Nix local machine identity
+.config/nix/local.nix

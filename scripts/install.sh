@@ -6,22 +6,21 @@ DOTFILES_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 DRY_RUN=false
 AUTO_YES=false
 TARGETS=()
-VALID_TARGETS=(core shell editor wezterm claude)
+VALID_TARGETS=(wezterm)
 
 usage() {
   cat <<'EOF'
-Usage: install.sh [-n|--dry-run] [-y|--yes] [all|core|shell|editor|wezterm|claude]...
+Usage: install.sh [-n|--dry-run] [-y|--yes] [all|wezterm]...
   -n, --dry-run  Show what would change without modifying files
   -y, --yes      Skip confirmation prompt
   -h, --help     Show this help
 
 Targets:
-  all      Apply all setup categories
-  core     Homebrew baseline
-  shell    zsh related tools and oh-my-zsh stack
-  editor   neovim + editor tools
-  wezterm  wezterm + nerd font
-  claude   Claude Code helper tools
+  all      Install all optional Homebrew-managed packages
+  wezterm  wezterm
+
+Core CLI, shell, editor, and Claude helper tools are now managed by Nix/Home Manager.
+Use ./scripts/bootstrap.sh for the main setup flow.
 EOF
 }
 
@@ -72,89 +71,27 @@ ensure_homebrew() {
     return
   fi
 
-  if "$DRY_RUN"; then
-    log_info "Homebrew is not installed. It would be installed in non-dry-run mode."
-    return
-  fi
+  cat >&2 <<'EOF'
+error: brew command is not installed.
 
-  log_info "Homebrew is not installed. Installing Homebrew..."
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-  if [[ -x /opt/homebrew/bin/brew ]]; then
-    eval "$(/opt/homebrew/bin/brew shellenv)"
-  elif [[ -x /usr/local/bin/brew ]]; then
-    eval "$(/usr/local/bin/brew shellenv)"
-  fi
-
-  if ! command -v brew >/dev/null 2>&1; then
-    echo "error: brew command is not available after installation" >&2
-    exit 1
-  fi
+Install Homebrew from the official website:
+  https://brew.sh/
+EOF
+  exit 1
 }
 
-apply_brewfile() {
-  local category="$1"
-  local brewfile="$DOTFILES_DIR/brew/Brewfile.$category"
-
-  if [[ ! -f "$brewfile" ]]; then
-    echo "error: missing brewfile: $brewfile" >&2
-    exit 1
-  fi
-
+apply_wezterm() {
   if ! command -v brew >/dev/null 2>&1; then
     if "$DRY_RUN"; then
-      log_skip "brew is unavailable, skip Brewfile.$category in dry-run"
+      log_skip "brew is unavailable, skip wezterm install in dry-run"
       return
     fi
     echo "error: brew command is unavailable" >&2
     exit 1
   fi
 
-  log_info "Applying Brewfile.$category"
-  run_cmd brew bundle --file "$brewfile" --no-lock
-}
-
-clone_if_missing() {
-  local repo="$1"
-  local dest="$2"
-
-  if [[ -d "$dest" ]]; then
-    log_skip "$dest (already exists)"
-    return
-  fi
-
-  run_cmd mkdir -p "$(dirname "$dest")"
-  run_cmd git clone --depth 1 "$repo" "$dest"
-}
-
-apply_core() {
-  apply_brewfile "core"
-}
-
-apply_shell() {
-  apply_brewfile "shell"
-  clone_if_missing "https://github.com/ohmyzsh/ohmyzsh.git" "$HOME/.oh-my-zsh"
-  clone_if_missing \
-    "https://github.com/romkatv/powerlevel10k.git" \
-    "$HOME/.oh-my-zsh/custom/themes/powerlevel10k"
-  clone_if_missing \
-    "https://github.com/zsh-users/zsh-autosuggestions.git" \
-    "$HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
-  clone_if_missing \
-    "https://github.com/zsh-users/zsh-syntax-highlighting.git" \
-    "$HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
-}
-
-apply_editor() {
-  apply_brewfile "editor"
-}
-
-apply_wezterm() {
-  apply_brewfile "wezterm"
-}
-
-apply_claude() {
-  apply_brewfile "claude"
+  log_info "Installing wezterm"
+  run_cmd brew install --cask wezterm
 }
 
 prompt_targets() {
@@ -224,7 +161,7 @@ while [[ $# -gt 0 ]]; do
     usage
     exit 0
     ;;
-  all | core | shell | editor | wezterm | claude)
+  all | wezterm)
     TARGETS+=("$1")
     shift
     ;;
@@ -254,20 +191,8 @@ confirm_execution
 
 for target in "${TARGETS[@]}"; do
   case "$target" in
-  core)
-    apply_core
-    ;;
-  shell)
-    apply_shell
-    ;;
-  editor)
-    apply_editor
-    ;;
   wezterm)
     apply_wezterm
-    ;;
-  claude)
-    apply_claude
     ;;
   *)
     echo "error: unknown target: $target" >&2
