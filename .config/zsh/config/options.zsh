@@ -24,5 +24,8 @@ ZSH_DIR=${${(%):-%x}:A:h}
 alias vzo="nvim $ZSH_DIR/ohmy.zsh"
 alias vze="nvim $ZSH_DIR/options.zsh"
 
+## nvim
+alias v='nvim'
+
 ## others
 alias re='exec $SHELL -l'
