@@ -11,7 +11,7 @@
 
   outputs = { nixpkgs, home-manager, ... }:
     let
-      system = builtins.currentSystem;
+      system = "aarch64-darwin";
       pkgs = nixpkgs.legacyPackages.${system};
       localConfig = import ./local.nix;
       mkHome = { username, homeDirectory }:

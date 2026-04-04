@@ -36,7 +36,7 @@ Homebrew管理は任意です。現状の対象は `wezterm` です。
 
 ## Supported OS
 
-- macOS (recommend)
+- macOS (Apple Silicon / arm64)
 
 ## Setup
 
@@ -126,6 +126,7 @@ WezTerm を Homebrew で入れる:
 ## Notes
 
 - `local.nix` を分けているのは、実ユーザー名とホームディレクトリを公開 repo に含めないためです。
+- Nix / Home Manager の構成は現時点で `aarch64-darwin` を前提にしています。
 - `scripts/apply.sh` は既存ファイルがある場合、バックアップを取ってから symlink を貼ります。
 
 ## License
