@@ -63,7 +63,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # HIST_STAMPS="mm/dd/yyyy"
 
 # Would you like to use another custom folder than $ZSH/custom?
-# export ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.config/oh-my-zsh/custom}"
+export ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.config/oh-my-zsh/custom}"
 
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
@@ -72,11 +72,14 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
 	git
-	zsh-syntax-highlighting
-	zsh-autosuggestions
 )
 
 source $ZSH/oh-my-zsh.sh
+
+[[ -r "$ZSH_CUSTOM/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] &&
+	source "$ZSH_CUSTOM/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
+[[ -r "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] &&
+	source "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
 # User configuration
 
