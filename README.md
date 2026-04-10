@@ -89,7 +89,7 @@ exec $SHELL -l
 Home Manager の設定を更新する:
 
 ```bash
-home-manager switch --impure --flake ./.config/nix#default
+home-manager switch --impure --flake ~/.config/nix#default
 ```
 
 symlink だけ貼り直す:
