@@ -13,7 +13,25 @@
     let
       system = "aarch64-darwin";
       pkgs = nixpkgs.legacyPackages.${system};
-      localConfig = import ./local.nix;
+      homeDir = builtins.getEnv "HOME";
+      localConfigPath = "${homeDir}/.config/dotfiles/local.nix";
+      localConfig =
+        if homeDir == "" then
+          throw ''
+            HOME is not available during flake evaluation.
+
+            Run Home Manager with --impure so ~/.config/dotfiles/local.nix can be read.
+          ''
+        else if !builtins.pathExists localConfigPath then
+          throw ''
+            Missing local Nix settings: ${localConfigPath}
+
+            Create it from:
+              mkdir -p ~/.config/dotfiles
+              cp ./.config/nix/local.nix.example ~/.config/dotfiles/local.nix
+          ''
+        else
+          import localConfigPath;
       mkHome = { username, homeDirectory }:
         home-manager.lib.homeManagerConfiguration {
           inherit pkgs;

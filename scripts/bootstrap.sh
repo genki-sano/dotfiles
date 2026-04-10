@@ -4,16 +4,18 @@ set -euo pipefail
 
 DOTFILES_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 FLAKE_DIR="$DOTFILES_DIR/.config/nix"
-LOCAL_NIX="$FLAKE_DIR/local.nix"
+LOCAL_NIX="$HOME/.config/dotfiles/local.nix"
 LOCAL_NIX_EXAMPLE="$FLAKE_DIR/local.nix.example"
 DRY_RUN=false
 AUTO_YES=false
+SKIP_APPLY=false
 
 usage() {
   cat <<'EOF'
-Usage: bootstrap.sh [-n|--dry-run] [-y|--yes]
+Usage: bootstrap.sh [-n|--dry-run] [-y|--yes] [--no-apply]
   -n, --dry-run  Show what would change without modifying files
   -y, --yes      Skip confirmation prompt
+  --no-apply     Skip running scripts/apply.sh
   -h, --help     Show this help
 EOF
 }
@@ -78,6 +80,7 @@ ensure_local_nix() {
 error: missing local Nix settings: $LOCAL_NIX
 
 Create it from:
+  mkdir -p "$(dirname "$LOCAL_NIX")"
   cp "$LOCAL_NIX_EXAMPLE" "$LOCAL_NIX"
 
 Then edit username and homeDirectory for this Mac.
@@ -89,13 +92,13 @@ run_home_manager() {
   local flake_ref="$FLAKE_DIR#default"
 
   if command -v home-manager >/dev/null 2>&1; then
-    run_cmd home-manager switch --flake "$flake_ref"
+    run_cmd home-manager switch --impure --flake "$flake_ref"
     return
   fi
 
   run_cmd nix \
     --extra-experimental-features "nix-command flakes" \
-    run home-manager/master -- switch --flake "$flake_ref"
+    run home-manager/master -- switch --impure --flake "$flake_ref"
 }
 
 while [[ $# -gt 0 ]]; do
@@ -111,6 +114,10 @@ while [[ $# -gt 0 ]]; do
   -h | --help)
     usage
     exit 0
+    ;;
+  --no-apply)
+    SKIP_APPLY=true
+    shift
     ;;
   *)
     usage >&2
@@ -136,7 +143,12 @@ ensure_nix
 ensure_local_nix
 
 if ! "$AUTO_YES" && ! "$DRY_RUN"; then
-  read -r -p "Run bootstrap (home-manager default + apply all)? [y/N]: " ans
+  prompt="Run bootstrap (home-manager default + apply all)? [y/N]: "
+  if "$SKIP_APPLY"; then
+    prompt="Run bootstrap (home-manager default only)? [y/N]: "
+  fi
+
+  read -r -p "$prompt" ans
   case "$ans" in
   y | Y | yes | YES)
     ;;
@@ -147,17 +159,21 @@ if ! "$AUTO_YES" && ! "$DRY_RUN"; then
   esac
 fi
 
-apply_cmd=(bash "$APPLY_SCRIPT" -y all)
-if "$DRY_RUN"; then
-  apply_cmd+=(-n)
-fi
-
 echo "info: start home-manager (default)"
 prepare_home_manager_paths
 run_home_manager
 
-echo "info: start apply"
-"${apply_cmd[@]}"
+if "$SKIP_APPLY"; then
+  echo "info: skip apply (--no-apply)"
+else
+  apply_cmd=(bash "$APPLY_SCRIPT" -y all)
+  if "$DRY_RUN"; then
+    apply_cmd+=(-n)
+  fi
+
+  echo "info: start apply"
+  "${apply_cmd[@]}"
+fi
 
 echo "info: done"
 echo "info: reload your shell with: exec \$SHELL -l"
