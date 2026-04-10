@@ -60,10 +60,11 @@ nix shell nixpkgs#git -c git clone https://github.com/genki-sano/dotfiles.git ~/
 ### 2. Create local config
 
 ```bash
-cp ./.config/nix/local.nix.example ./.config/nix/local.nix
+mkdir -p ~/.config/dotfiles
+cp ./.config/nix/local.nix.example ~/.config/dotfiles/local.nix
 ```
 
-その後、[`.config/nix/local.nix.example`](.config/nix/local.nix.example) を参考に、この Mac 用の `username` と `homeDirectory` を設定します。
+その後、[`.config/nix/local.nix.example`](.config/nix/local.nix.example) を参考に、`~/.config/dotfiles/local.nix` にこの Mac 用の `username` と `homeDirectory` を設定します。
 
 ### 3. Run bootstrap
 
@@ -88,7 +89,7 @@ exec $SHELL -l
 Home Manager の設定を更新する:
 
 ```bash
-home-manager switch --flake ./.config/nix#default
+home-manager switch --impure --flake ./.config/nix#default
 ```
 
 symlink だけ貼り直す:
@@ -125,8 +126,9 @@ WezTerm を Homebrew で入れる:
 
 ## Notes
 
-- `local.nix` を分けているのは、実ユーザー名とホームディレクトリを公開 repo に含めないためです。
+- `local.nix` を分けているのは、実ユーザー名とホームディレクトリを公開 repo に含めないためです。配置先は repo 外の `~/.config/dotfiles/local.nix` です。
 - Nix / Home Manager の構成は現時点で `aarch64-darwin` を前提にしています。
+- `~/.config/dotfiles/local.nix` を読むため、Home Manager の flake 実行は `--impure` 前提です。
 - `scripts/apply.sh` は既存ファイルがある場合、バックアップを取ってから symlink を貼ります。
 
 ## License
