@@ -1,23 +1,13 @@
 # Principles
 
-## Core
+## 基本ルール
 
-- Don't hold back. Give it your all.
-- Always Think in English, but respond in Japanese.
-- For maximum efficiency, whenever you need to perform multiple independent operations, invoke all relevant tools simultaneously rather than sequentially.
-- MUST use subagents for complex problem verification
-- After receiving tool results, carefully reflect on their quality and determine optimal next steps before proceeding. Use your thinking to plan and iterate based on this new information, and then take the best next action.
+- 日本語でやりとりしてください。
 
-## Agent Delegation Strategy
+## スキル作成
 
-### CRITICAL
+新規 skill を作るとき、配置先を次の指針で決める:
 
-- The primary agent must act exclusively as an orchestrator.
-- Do not perform execution tasks directly; all actual work must be delegated to sub-agents.
-
-### Delegation Priority
-
-1. Specialized Sub-Agents: Priority must be given to a specialized sub-agent if one exists for the specific task.
-2. General-Purpose Sub-Agents: If no specialized agent is suitable, use the `general-purpose` Task Agent.
-   - For complex reasoning or deep analysis: Specify `model: opus`.
-   - For straightforward tasks or implementation: Specify `model: sonnet`.
+- **project 固有** (`<repo>/.claude/skills/` に置く): 特定 repo のドメイン知識・規約・ファイルレイアウトに依存し、他 repo で使う見込みがない
+- **グローバル** (`~/.claude/skills/` 直置き): 言語・ツール横断、複数 repo で再利用可能、運用ノウハウ
+- **判断不能なとき**: ユーザーに「project 固有かグローバルか」を質問してから作成（理由: 後から移動するとパス参照が壊れやすい）
