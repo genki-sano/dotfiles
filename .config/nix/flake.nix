@@ -1,18 +1,20 @@
 {
-  description = "dotfiles managed with Home Manager";
+  description = "dotfiles managed with nix-darwin and Home Manager";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nix-darwin = {
+      url = "github:LnL7/nix-darwin/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { nixpkgs, home-manager, ... }:
+  outputs = { nix-darwin, home-manager, ... }:
     let
-      system = "aarch64-darwin";
-      pkgs = nixpkgs.legacyPackages.${system};
       homeDir = builtins.getEnv "HOME";
       localConfigPath = "${homeDir}/.config/dotfiles/local.nix";
       localConfig =
@@ -20,7 +22,7 @@
           throw ''
             HOME is not available during flake evaluation.
 
-            Run Home Manager with --impure so ~/.config/dotfiles/local.nix can be read.
+            Run with --impure so ~/.config/dotfiles/local.nix can be read.
           ''
         else if !builtins.pathExists localConfigPath then
           throw ''
@@ -32,22 +34,19 @@
           ''
         else
           import localConfigPath;
-      mkHome = { username, homeDirectory }:
-        home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          modules = [
-            ./home/common.nix
-            {
-              home.username = username;
-              home.homeDirectory = homeDirectory;
-            }
-          ];
-        };
     in {
-      homeConfigurations = {
-        default = mkHome {
-          inherit (localConfig) username homeDirectory;
-        };
+      darwinConfigurations.default = nix-darwin.lib.darwinSystem {
+        system = "aarch64-darwin";
+        specialArgs = { inherit localConfig; };
+        modules = [
+          ./darwin/default.nix
+          home-manager.darwinModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.${localConfig.username} = import ./home/common.nix;
+          }
+        ];
       };
     };
 }
