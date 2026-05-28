@@ -25,7 +25,7 @@
       magnification = true;
       # 拡大時のサイズ
       largesize = 65;
-      # 画面下に配置
+      # Dockの位置 ("left", "bottom", "right")
       orientation = "bottom";
       # 自動的に隠す
       autohide = true;
@@ -35,7 +35,7 @@
       show-recents = true;
       # アプリアイコンにしまわない
       minimize-to-application = false;
-      # 最小化エフェクト
+      # 最小化エフェクト ("genie", "suck", "scale")
       mineffect = "genie";
       # スタックをマウスオーバーでハイライト
       mouse-over-hilite-stack = true;
@@ -63,17 +63,17 @@
       ShowRemovableMediaOnDesktop = true;
       # マウント済みサーバーをデスクトップに表示しない
       ShowMountedServersOnDesktop = false;
-      # デフォルトをリスト表示に
+      # デフォルトの表示スタイル ("icnv": アイコン, "Nlsv": リスト, "clmv": カラム, "Flwv": ギャラリー)
       FXPreferredViewStyle = "Nlsv";
       # フォルダを先頭に並べない
       _FXSortFoldersFirst = false;
-      # 検索スコープ（現在のフォルダ内）
+      # 検索スコープ ("SCev": 現在のフォルダ, "SCcf": この Mac 全体, "SCsp": 共有ファイル)
       FXDefaultSearchScope = "SCev";
       # 拡張子変更時に警告
       FXEnableExtensionChangeWarning = true;
       # タイトルバーに POSIX パスを表示しない
       _FXShowPosixPathInTitle = false;
-      # 新しいウィンドウのデフォルトをホームに
+      # 新しいウィンドウのデフォルト ("Home", "Desktop", "Documents", "Recents", "Computer", "iCloud")
       NewWindowTarget = "Home";
     };
 
@@ -81,7 +81,7 @@
     # グローバル設定
     # --------------------------------------------------
     NSGlobalDomain = {
-      # ダークモード
+      # インターフェーススタイル ("Dark": ダーク, null: ライト)
       AppleInterfaceStyle = "Dark";
       # キーリピート速度（小さいほど速い）
       KeyRepeat = 1;
@@ -99,7 +99,7 @@
       NSAutomaticQuoteSubstitutionEnabled = true;
       # ナチュラルスクロール方向
       "com.apple.swipescrolldirection" = true;
-      # スクロールバーを自動表示
+      # スクロールバーの表示タイミング ("Automatic", "WhenScrolling", "Always")
       AppleShowScrollBars = "Automatic";
       # スクロールバークリックで次ページに移動しない
       AppleScrollerPagingBehavior = false;
@@ -109,7 +109,7 @@
       _HIHideMenuBar = false;
       # 12時間表示
       AppleICUForce24HourTime = false;
-      # 単位をセンチメートルに
+      # 単位 ("Centimeters", "Inches")
       AppleMeasurementUnits = "Centimeters";
       # メートル法を使用
       AppleMetricUnits = 1;
@@ -125,7 +125,7 @@
       NSScrollAnimationEnabled = true;
       # フォーカスリングのアニメーション
       NSUseAnimatedFocusRing = true;
-      # テーブルビューのデフォルトサイズ（中）
+      # テーブルビューのデフォルトサイズ (1: 小, 2: 中, 3: 大)
       NSTableViewDefaultSizeMode = 2;
     };
 
@@ -147,11 +147,11 @@
     # スクリーンショット
     # --------------------------------------------------
     screencapture = {
-      # クリップボードに保存
+      # 保存先 ("clipboard": クリップボード, "file": ファイル, "preview": プレビュー)
       target = "clipboard";
       # ファイル保存先
       location = "~/Pictures/Screenshots";
-      # PNG 形式
+      # ファイル形式 ("png", "jpg", "pdf", "tiff", "bmp", "gif")
       type = "png";
       # ウィンドウの影を含める
       disable-shadow = false;
@@ -180,7 +180,7 @@
     # メニューバーの時計
     # --------------------------------------------------
     menuExtraClock = {
-      # 日付を非表示
+      # 日付表示 (0: 非表示, 1: 日付のみ, 2: 日付＋曜日)
       ShowDate = 0;
       # 曜日を表示
       ShowDayOfWeek = true;
