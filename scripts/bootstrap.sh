@@ -88,17 +88,17 @@ EOF
   exit 1
 }
 
-run_home_manager() {
+run_darwin() {
   local flake_ref="$FLAKE_DIR#default"
 
-  if command -v home-manager >/dev/null 2>&1; then
-    run_cmd home-manager switch --impure --flake "$flake_ref"
+  if command -v darwin-rebuild >/dev/null 2>&1; then
+    run_cmd darwin-rebuild switch --impure --flake "$flake_ref"
     return
   fi
 
   run_cmd nix \
     --extra-experimental-features "nix-command flakes" \
-    run home-manager/master -- switch --impure --flake "$flake_ref"
+    run nix-darwin -- switch --impure --flake "$flake_ref"
 }
 
 while [[ $# -gt 0 ]]; do
@@ -143,9 +143,9 @@ ensure_nix
 ensure_local_nix
 
 if ! "$AUTO_YES" && ! "$DRY_RUN"; then
-  prompt="Run bootstrap (home-manager default + apply all)? [y/N]: "
+  prompt="Run bootstrap (nix-darwin default + apply all)? [y/N]: "
   if "$SKIP_APPLY"; then
-    prompt="Run bootstrap (home-manager default only)? [y/N]: "
+    prompt="Run bootstrap (nix-darwin default only)? [y/N]: "
   fi
 
   read -r -p "$prompt" ans
@@ -159,9 +159,9 @@ if ! "$AUTO_YES" && ! "$DRY_RUN"; then
   esac
 fi
 
-echo "info: start home-manager (default)"
+echo "info: start nix-darwin (default)"
 prepare_home_manager_paths
-run_home_manager
+run_darwin
 
 if "$SKIP_APPLY"; then
   echo "info: skip apply (--no-apply)"
