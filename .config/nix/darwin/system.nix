@@ -26,7 +26,7 @@
       # 拡大時のサイズ
       largesize = 65;
       # Dockの位置 ("left", "bottom", "right")
-      orientation = "bottom";
+      orientation = "left";
       # 自動的に隠す
       autohide = true;
       # 実行中アプリのインジケーターを表示
@@ -66,7 +66,7 @@
       # デフォルトの表示スタイル ("icnv": アイコン, "Nlsv": リスト, "clmv": カラム, "Flwv": ギャラリー)
       FXPreferredViewStyle = "Nlsv";
       # フォルダを先頭に並べる
-      _FXSortFoldersFirst = false;
+      _FXSortFoldersFirst = true;
       # 検索スコープ ("SCev": 現在のフォルダ, "SCcf": この Mac 全体, "SCsp": 共有ファイル)
       FXDefaultSearchScope = "SCev";
       # 拡張子変更時に警告
@@ -100,7 +100,7 @@
       # ナチュラルスクロール（指の動きと逆方向にスクロール）
       "com.apple.swipescrolldirection" = true;
       # スクロールバーの表示タイミング ("Automatic", "WhenScrolling", "Always")
-      AppleShowScrollBars = "Automatic";
+      AppleShowScrollBars = "Always";
       # スクロールバークリックで次ページに移動
       AppleScrollerPagingBehavior = false;
       # ウィンドウアニメーションを有効
@@ -108,7 +108,7 @@
       # メニューバーを隠す
       _HIHideMenuBar = false;
       # 24時間表示
-      AppleICUForce24HourTime = false;
+      AppleICUForce24HourTime = true;
       # 単位 ("Centimeters", "Inches")
       AppleMeasurementUnits = "Centimeters";
       # メートル法を使用
@@ -181,15 +181,15 @@
     # --------------------------------------------------
     menuExtraClock = {
       # 日付表示 (0: 非表示, 1: 日付のみ, 2: 日付＋曜日)
-      ShowDate = 0;
+      ShowDate = 2;
       # 曜日を表示
       ShowDayOfWeek = true;
       # 秒を表示
-      ShowSeconds = false;
+      ShowSeconds = true;
       # 24時間表示
-      Show24Hour = false;
+      Show24Hour = true;
       # AM/PM を表示
-      ShowAMPM = true;
+      ShowAMPM = false;
       # アナログ表示
       IsAnalog = false;
     };
@@ -224,6 +224,12 @@
     # 個別アプリ設定（CustomUserPreferences）
     # --------------------------------------------------
     CustomUserPreferences = {
+      # メニューバーの時計フォーマット（年を含む表示）
+      # ICU フォーマット: EEE=曜日, yyyy=年, M/d=月日, h:mm=時分, a=AM/PM
+      "com.apple.menuextra.clock" = {
+        DateFormat = "EEE yyyy/M/d  h:mm a";
+      };
+
       # Bluetooth 音声の最小ビットプールを設定（音質向上）
       "com.apple.BluetoothAudioAgent" = {
         "Apple Bitpool Min (editable)" = 40;
