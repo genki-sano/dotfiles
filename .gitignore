@@ -1,3 +1,6 @@
+# Nix local machine config (machine-specific, not committed)
+.config/nix/local.nix
+
 # GitHub CLI auth token
 .config/gh/hosts.yml
 

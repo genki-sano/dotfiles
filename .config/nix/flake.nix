@@ -15,22 +15,16 @@
 
   outputs = { nix-darwin, home-manager, ... }:
     let
-      homeDir = builtins.getEnv "HOME";
-      localConfigPath = "${homeDir}/.config/dotfiles/local.nix";
+      localConfigPath = ./local.nix;
       localConfig =
-        if homeDir == "" then
+        if !builtins.pathExists localConfigPath then
           throw ''
-            HOME is not available during flake evaluation.
-
-            Run with --impure so ~/.config/dotfiles/local.nix can be read.
-          ''
-        else if !builtins.pathExists localConfigPath then
-          throw ''
-            Missing local Nix settings: ${localConfigPath}
+            Missing local Nix settings: .config/nix/local.nix
 
             Create it from:
-              mkdir -p ~/.config/dotfiles
-              cp ./.config/nix/local.nix.example ~/.config/dotfiles/local.nix
+              cp ./.config/nix/local.nix.example ./.config/nix/local.nix
+
+            Then edit username and homeDirectory for this Mac.
           ''
         else
           import localConfigPath;
