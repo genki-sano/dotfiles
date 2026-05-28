@@ -176,23 +176,6 @@
       GuestEnabled = false;
     };
 
-    # --------------------------------------------------
-    # メニューバーの時計
-    # --------------------------------------------------
-    menuExtraClock = {
-      # 日付表示 (0: 非表示, 1: 日付のみ, 2: 日付＋曜日)
-      ShowDate = 2;
-      # 曜日を表示
-      ShowDayOfWeek = true;
-      # 秒を表示
-      ShowSeconds = true;
-      # 24時間表示
-      Show24Hour = true;
-      # AM/PM を表示
-      ShowAMPM = false;
-      # アナログ表示
-      IsAnalog = false;
-    };
 
     # --------------------------------------------------
     # Mission Control
@@ -224,6 +207,12 @@
     # 個別アプリ設定（CustomUserPreferences）
     # --------------------------------------------------
     CustomUserPreferences = {
+      # メニューバーの時計フォーマット（macOS 15 では DateFormat が有効）
+      # ICU フォーマット: EEE=曜日, yyyy/M/d=年月日, H:mm:ss=24時間+秒
+      "com.apple.menuextra.clock" = {
+        DateFormat = "EEE yyyy/M/d  H:mm:ss";
+      };
+
       # Bluetooth 音声の最小ビットプールを設定（音質向上）
       "com.apple.BluetoothAudioAgent" = {
         "Apple Bitpool Min (editable)" = 40;
