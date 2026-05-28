@@ -1,4 +1,5 @@
 {
   username = "your-user";
   homeDirectory = "/Users/your-user";
+  # hostname = "your-hostname";  # optional: sets networking.hostName
 }
