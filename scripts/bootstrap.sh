@@ -4,8 +4,6 @@ set -euo pipefail
 
 DOTFILES_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 FLAKE_DIR="$DOTFILES_DIR/.config/nix"
-LOCAL_NIX="$HOME/.config/dotfiles/local.nix"
-LOCAL_NIX_EXAMPLE="$FLAKE_DIR/local.nix.example"
 DRY_RUN=false
 AUTO_YES=false
 SKIP_APPLY=false
@@ -71,34 +69,20 @@ prepare_home_manager_paths() {
   backup_path_if_exists "$HOME/.config/oh-my-zsh" "$HOME/.config/oh-my-zsh.pre-home-manager"
 }
 
-ensure_local_nix() {
-  if [[ -f "$LOCAL_NIX" ]]; then
-    return
-  fi
-
-  cat >&2 <<EOF
-error: missing local Nix settings: $LOCAL_NIX
-
-Create it from:
-  mkdir -p "$(dirname "$LOCAL_NIX")"
-  cp "$LOCAL_NIX_EXAMPLE" "$LOCAL_NIX"
-
-Then edit username and homeDirectory for this Mac.
-EOF
-  exit 1
-}
-
 run_darwin() {
   local flake_ref="$FLAKE_DIR#default"
 
   if command -v darwin-rebuild >/dev/null 2>&1; then
-    run_cmd darwin-rebuild switch --impure --flake "$flake_ref"
+    run_cmd sudo darwin-rebuild switch --flake "$flake_ref"
     return
   fi
 
-  run_cmd nix \
+  # First-time bootstrap: darwin-rebuild is not yet installed
+  run_cmd nix build \
     --extra-experimental-features "nix-command flakes" \
-    run nix-darwin -- switch --impure --flake "$flake_ref"
+    --out-link /tmp/nix-darwin-result \
+    "$FLAKE_DIR#darwinConfigurations.default.system"
+  run_cmd sudo /tmp/nix-darwin-result/activate
 }
 
 while [[ $# -gt 0 ]]; do
@@ -140,7 +124,6 @@ fi
 
 ensure_macos
 ensure_nix
-ensure_local_nix
 
 if ! "$AUTO_YES" && ! "$DRY_RUN"; then
   prompt="Run bootstrap (nix-darwin default + apply all)? [y/N]: "
