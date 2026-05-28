@@ -6,8 +6,9 @@ elif [[ -x /usr/local/bin/brew ]]; then
 fi
 
 # mise
-if [[ -x "$HOME/.nix-profile/bin/mise" ]]; then
-  eval "$("$HOME/.nix-profile/bin/mise" activate zsh)"
-elif command -v mise >/dev/null 2>&1; then
+if command -v mise >/dev/null 2>&1; then
   eval "$(mise activate zsh)"
 fi
+
+# claude
+export PATH="$HOME/.local/bin:$PATH"
