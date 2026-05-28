@@ -33,13 +33,13 @@
       show-process-indicators = true;
       # 最近使ったアプリを表示
       show-recents = true;
-      # アプリアイコンにしまわない
+      # 最小化時にアプリアイコンにしまう
       minimize-to-application = false;
       # 最小化エフェクト ("genie", "suck", "scale")
       mineffect = "genie";
       # スタックをマウスオーバーでハイライト
       mouse-over-hilite-stack = true;
-      # 起動中のアプリのみ表示しない
+      # 起動中のアプリのみ Dock に表示
       static-only = false;
     };
 
@@ -49,29 +49,29 @@
     finder = {
       # すべての拡張子を表示
       AppleShowAllExtensions = true;
-      # 隠しファイルを表示しない
+      # 隠しファイルを表示
       AppleShowAllFiles = false;
       # ステータスバーを表示
       ShowStatusBar = true;
       # パスバーを表示
       ShowPathbar = true;
-      # デスクトップにハードドライブを表示しない
+      # デスクトップにハードドライブを表示
       ShowHardDrivesOnDesktop = false;
-      # 外部ドライブをデスクトップに表示しない
+      # 外部ドライブをデスクトップに表示
       ShowExternalHardDrivesOnDesktop = false;
       # リムーバブルメディアをデスクトップに表示
       ShowRemovableMediaOnDesktop = true;
-      # マウント済みサーバーをデスクトップに表示しない
+      # マウント済みサーバーをデスクトップに表示
       ShowMountedServersOnDesktop = false;
       # デフォルトの表示スタイル ("icnv": アイコン, "Nlsv": リスト, "clmv": カラム, "Flwv": ギャラリー)
       FXPreferredViewStyle = "Nlsv";
-      # フォルダを先頭に並べない
+      # フォルダを先頭に並べる
       _FXSortFoldersFirst = false;
       # 検索スコープ ("SCev": 現在のフォルダ, "SCcf": この Mac 全体, "SCsp": 共有ファイル)
       FXDefaultSearchScope = "SCev";
       # 拡張子変更時に警告
       FXEnableExtensionChangeWarning = true;
-      # タイトルバーに POSIX パスを表示しない
+      # タイトルバーに POSIX パスを表示
       _FXShowPosixPathInTitle = false;
       # 新しいウィンドウのデフォルト ("Home", "Desktop", "Documents", "Recents", "Computer", "iCloud")
       NewWindowTarget = "Home";
@@ -97,17 +97,17 @@
       NSAutomaticPeriodSubstitutionEnabled = true;
       # 引用符の自動置換
       NSAutomaticQuoteSubstitutionEnabled = true;
-      # ナチュラルスクロール方向
+      # ナチュラルスクロール（指の動きと逆方向にスクロール）
       "com.apple.swipescrolldirection" = true;
       # スクロールバーの表示タイミング ("Automatic", "WhenScrolling", "Always")
       AppleShowScrollBars = "Automatic";
-      # スクロールバークリックで次ページに移動しない
+      # スクロールバークリックで次ページに移動
       AppleScrollerPagingBehavior = false;
-      # ウィンドウアニメーション
+      # ウィンドウアニメーションを有効
       NSAutomaticWindowAnimationsEnabled = true;
-      # メニューバーを隠さない
+      # メニューバーを隠す
       _HIHideMenuBar = false;
-      # 12時間表示
+      # 24時間表示
       AppleICUForce24HourTime = false;
       # 単位 ("Centimeters", "Inches")
       AppleMeasurementUnits = "Centimeters";
@@ -119,11 +119,11 @@
       # 印刷ダイアログを展開表示
       PMPrintingExpandedStateForPrint = true;
       PMPrintingExpandedStateForPrint2 = true;
-      # 新規書類をクラウドに保存しない
+      # 新規書類をクラウドに保存
       NSDocumentSaveNewDocumentsToCloud = false;
-      # スクロールアニメーション
+      # スクロールアニメーションを有効
       NSScrollAnimationEnabled = true;
-      # フォーカスリングのアニメーション
+      # フォーカスリングのアニメーションを有効
       NSUseAnimatedFocusRing = true;
       # テーブルビューのデフォルトサイズ (1: 小, 2: 中, 3: 大)
       NSTableViewDefaultSizeMode = 2;
@@ -137,9 +137,9 @@
       Clicking = true;
       # 2本指で右クリック
       TrackpadRightClick = true;
-      # 3本指ドラッグを無効
+      # 3本指ドラッグを有効
       TrackpadThreeFingerDrag = false;
-      # クリック感度を最小
+      # クリック感度（0: 最小, 1: 標準）
       ActuationStrength = 0;
     };
 
@@ -153,9 +153,9 @@
       location = "~/Pictures/Screenshots";
       # ファイル形式 ("png", "jpg", "pdf", "tiff", "bmp", "gif")
       type = "png";
-      # ウィンドウの影を含める
+      # ウィンドウの影を除去
       disable-shadow = false;
-      # サムネイルを表示
+      # 撮影後にサムネイルを表示
       show-thumbnail = true;
     };
 
@@ -163,7 +163,7 @@
     # スクリーンセーバー
     # --------------------------------------------------
     screensaver = {
-      # 解除時にパスワード不要
+      # スクリーンセーバー解除時にパスワードを要求
       askForPassword = false;
       askForPasswordDelay = 0;
     };
@@ -172,7 +172,7 @@
     # ログインウィンドウ
     # --------------------------------------------------
     loginwindow = {
-      # ゲストユーザーを無効
+      # ゲストユーザーを有効
       GuestEnabled = false;
     };
 
@@ -184,13 +184,13 @@
       ShowDate = 0;
       # 曜日を表示
       ShowDayOfWeek = true;
-      # 秒を非表示
+      # 秒を表示
       ShowSeconds = false;
-      # 12時間表示
+      # 24時間表示
       Show24Hour = false;
       # AM/PM を表示
       ShowAMPM = true;
-      # デジタル表示
+      # アナログ表示
       IsAnalog = false;
     };
 
@@ -203,7 +203,7 @@
     };
 
     WindowManager = {
-      # ウィンドウマネージャーを無効
+      # ウィンドウマネージャーを有効
       GloballyEnabled = false;
     };
 
@@ -211,12 +211,12 @@
     # その他
     # --------------------------------------------------
     LaunchServices = {
-      # ダウンロードしたファイルの検疫警告を無効
+      # ダウンロードしたファイルの検疫警告を有効
       LSQuarantine = false;
     };
 
     SoftwareUpdate = {
-      # macOS の自動アップデートを無効
+      # macOS の自動アップデートを有効
       AutomaticallyInstallMacOSUpdates = false;
     };
 
@@ -254,8 +254,9 @@
         DialogType = "none";
       };
 
-      # ヘルプビューアをデベロッパーモードで開く
+      # ヘルプビューアの設定
       "com.apple.helpviewer" = {
+        # デベロッパーモードで開く
         DevMode = true;
       };
 
@@ -264,15 +265,19 @@
         "com.apple.trackpad.scaling" = 5.0;
       };
 
-      # トラックパッドのドラッグを有効（ロックなし）
+      # トラックパッドのドラッグ設定
       "com.apple.AppleMultitouchTrackpad" = {
+        # ドラッグを有効
         Dragging = true;
+        # ドラッグロックを有効（指を離してもドラッグ継続）
         DragLock = false;
       };
 
-      # Bluetooth トラックパッドのドラッグを有効（ロックなし）
+      # Bluetooth トラックパッドのドラッグ設定
       "com.apple.driver.AppleBluetoothMultitouch.trackpad" = {
+        # ドラッグを有効
         Dragging = true;
+        # ドラッグロックを有効（指を離してもドラッグ継続）
         DragLock = false;
       };
     };
