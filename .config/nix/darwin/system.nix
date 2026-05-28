@@ -1,6 +1,6 @@
-{ localConfig, ... }:
+{ config, ... }:
 {
-  system.primaryUser = localConfig.username;
+  system.primaryUser = config.hostSpec.username;
 
   system.defaults = {
     NSGlobalDomain = {
@@ -42,7 +42,7 @@
   };
 
   system.activationScripts.postActivation.text = ''
-    chflags nohidden /Users/${localConfig.username}/Library
+    chflags nohidden /Users/${config.hostSpec.username}/Library
     chflags nohidden /Volumes
     systemsetup -setrestartfreeze on 2>/dev/null || true
   '';
