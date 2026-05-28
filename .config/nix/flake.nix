@@ -13,39 +13,40 @@
     };
   };
 
-  outputs = { nix-darwin, home-manager, ... }:
+  outputs = { self, nixpkgs, nix-darwin, home-manager, ... }:
     let
-      homeDir = builtins.getEnv "HOME";
-      localConfigPath = "${homeDir}/.config/dotfiles/local.nix";
-      localConfig =
-        if homeDir == "" then
-          throw ''
-            HOME is not available during flake evaluation.
+      system = "aarch64-darwin";
+      pkgs = nixpkgs.legacyPackages.${system};
 
-            Run with --impure so ~/.config/dotfiles/local.nix can be read.
-          ''
-        else if !builtins.pathExists localConfigPath then
-          throw ''
-            Missing local Nix settings: ${localConfigPath}
-
-            Create it from:
-              mkdir -p ~/.config/dotfiles
-              cp ./.config/nix/local.nix.example ~/.config/dotfiles/local.nix
-          ''
-        else
-          import localConfigPath;
+      mkApp = name: script: {
+        type = "app";
+        program = "${pkgs.writeShellApplication {
+          inherit name;
+          text = script;
+        }}/bin/${name}";
+      };
     in {
+      apps.${system} = {
+        switch = mkApp "darwin-switch" ''
+          sudo darwin-rebuild switch --flake "${self}#default"
+        '';
+        build = mkApp "darwin-build" ''
+          darwin-rebuild build --flake "${self}#default"
+        '';
+      };
+
       darwinConfigurations.default = nix-darwin.lib.darwinSystem {
-        system = "aarch64-darwin";
-        specialArgs = { inherit localConfig; };
+        inherit system;
         modules = [
+          ./modules/hostSpec.nix
+          ./hosts/default.nix
           ./darwin/default.nix
           home-manager.darwinModules.home-manager
-          {
+          ({ config, ... }: {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.${localConfig.username} = import ./home/common.nix;
-          }
+            home-manager.users.${config.hostSpec.username} = import ./home/common.nix;
+          })
         ];
       };
     };
