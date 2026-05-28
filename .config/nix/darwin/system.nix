@@ -224,12 +224,6 @@
     # 個別アプリ設定（CustomUserPreferences）
     # --------------------------------------------------
     CustomUserPreferences = {
-      # メニューバーの時計フォーマット（年を含む表示）
-      # ICU フォーマット: EEE=曜日, yyyy=年, M/d=月日, h:mm=時分, a=AM/PM
-      "com.apple.menuextra.clock" = {
-        DateFormat = "EEE yyyy/M/d  h:mm a";
-      };
-
       # Bluetooth 音声の最小ビットプールを設定（音質向上）
       "com.apple.BluetoothAudioAgent" = {
         "Apple Bitpool Min (editable)" = 40;
