@@ -5,9 +5,9 @@
       type = lib.types.str;
       description = "Username for this host";
     };
-    homeDirectory = lib.mkOption {
+    system = lib.mkOption {
       type = lib.types.str;
-      description = "Home directory path for this host";
+      description = "System architecture";
     };
   };
 }

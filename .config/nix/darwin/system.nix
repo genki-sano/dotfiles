@@ -32,7 +32,7 @@
       # 実行中アプリのインジケーターを表示
       show-process-indicators = true;
       # 最近使ったアプリを表示
-      show-recents = true;
+      show-recents = false;
       # 最小化時にアプリアイコンにしまう
       minimize-to-application = false;
       # 最小化エフェクト ("genie", "suck", "scale")

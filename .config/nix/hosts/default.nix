@@ -2,6 +2,6 @@
 {
   hostSpec = {
     username = "genki.sano";
-    homeDirectory = "/Users/genki.sano";
+    system = "aarch64-darwin";
   };
 }

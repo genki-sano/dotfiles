@@ -19,3 +19,6 @@
 
 ## Lazy plugin runtime
 .config/nvim/lazy/
+
+## nix
+.config/nix/result
