@@ -107,10 +107,7 @@ exec $SHELL -l
 nix-darwin の設定を更新する:
 
 ```bash
-sudo nix run \
-  --extra-experimental-features nix-command \
-  --extra-experimental-features flakes \
-  nix-darwin -- switch --flake "$HOME/dotfiles/.config/nix#default"
+nix run ~/dotfiles/.config/nix#switch
 ```
 
 `git` / `claude` など Home Manager 管理外の symlink を手動で貼り直す:
