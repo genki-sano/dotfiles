@@ -45,7 +45,8 @@
           ({ config, ... }: {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.${config.hostSpec.username} = import ./home/common.nix;
+            home-manager.backupFileExtension = "before-home-manager";
+            home-manager.users.${config.hostSpec.username} = import ./home-manager;
           })
         ];
       };
